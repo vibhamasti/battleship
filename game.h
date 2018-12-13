@@ -11,19 +11,18 @@
 #include <iostream>
 
 
-
+// TODO: map for scores
 
 class Game {
     Player p1, p2;
-    std::fstream playerNames;   // file that stores player names
+    std::fstream playerNames;                   // file that stores player names
     bool isWon;
-    Coord guessPos;
 public:
     Game();
     void getPlayers();
-    void checkFile(char *);     // TODO: define
-    bool inPlay();              // TODO: define
-    void updateScores();        // TODO: define
+    void checkFile(char *);                     // TODO: define
+    bool inPlay();                              // TODO: define
+    void updateScores(Player, Player, Coord);   // TODO: define
     void play();
 };
 
