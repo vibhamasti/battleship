@@ -30,8 +30,17 @@ void Game::checkFile(char *pname) {
     // display high score
 }
 
+// function to update scores of player madeHit
+void Game::updateScores(Player madeHit, Player gotHit, Coord guessPos) {
+    // madeHit is the player whose round is being played
+    // gotHit is the current player's opponent
+
+    // TODO: finish function
+
+}
+
 void Game::getPlayers() {
-    // player 1
+    // PLAYER 1
     
     // print player 1's empty map
     cout << "\n\n\nPlayer one\n";
@@ -52,8 +61,8 @@ void Game::getPlayers() {
     cout << "\n\n" << p1.getName() << "'s map\n\n";
     p1.printFullMap();
     
-    // player 2
-    
+    // PLAYER 2
+
     // print player 2's empty map
     cout << "\n\n\nPlayer two\n";
     p2.printFullMap();
@@ -79,7 +88,10 @@ void Game::getPlayers() {
 }
 
 void Game::play() {
+    Coord guessPos;
     
+    // PLAYER 1
+
     // player 1 makes guess
     cout << p1.getName() << ": enter your guess:\n";
     
@@ -88,20 +100,24 @@ void Game::play() {
     // checks for valid input and changes coord values in map
     p2.getsHit(guessPos);
     
-    // TODO: updates score
-    // updateScores()
+    // updates score
+    updateScores(p1, p2, guessPos);
     
     cout << endl << p2.getName() << "'s map for " << p1.getName() << " to view:\n";
     
-    // TODO: displays partial map
+    // TODO: displays partial map and not entire map
+    // use GuessCoord values for this
     p2.printFullMap();
     
-    // displays scores
+    // TODO: display scores of player 1
     
-    // game is won?
+    // TODO: check if game is won
     
     // TODO: clear screen
     
+
+    // PLAYER 2
+
     // player 2 makes guess
     cout << p2.getName() << ": enter your guess:\n";
     guessPos.input();
@@ -109,16 +125,18 @@ void Game::play() {
     p1.getsHit(guessPos);
     
     // TODO: updates score
-    // updateScores()
+    updateScores(p2, p1, guessPos);
 
     cout << endl << p1.getName() << "'s map for " << p2.getName() << " to view:\n";
     
     // TODO: displays partial map
+    // use GuessCoord values for this
     p1.printFullMap();
     
-    // displays scores
-    // game is won?
+    // TODO: display scores of player 2
+
+    // TODO: check if game is won
     
-    
+    // TODO: clear screen
     
 }
