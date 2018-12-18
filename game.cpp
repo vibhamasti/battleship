@@ -8,6 +8,8 @@
 
 using namespace std;
 
+
+
 // constructor (resets game)
 Game::Game() {
     isWon = false;
@@ -90,11 +92,12 @@ void Game::getPlayers() {
 void Game::play() {
     Coord guessPos;
     
-    // PLAYER 1
+    //////////////
+    // PLAYER 1 //
+    //////////////
 
     // player 1 makes guess
     cout << p1.getName() << ": enter your guess:\n";
-    
     guessPos.input();
     
     // checks for valid input and changes coord values in map
@@ -103,35 +106,38 @@ void Game::play() {
     // updates score
     updateScores(p1, p2, guessPos);
     
+
+    // displays partial map of player 2
     cout << endl << p2.getName() << "'s map for " << p1.getName() << " to view:\n";
-    
-    // TODO: displays partial map and not entire map
-    // use GuessCoord values for this
-    p2.printFullMap();
+    p2.printGuessMap();
     
     // TODO: display scores of player 1
     
+
     // TODO: check if game is won
     
     // TODO: clear screen
     
 
-    // PLAYER 2
+    //////////////
+    // PLAYER 2 //
+    //////////////
 
     // player 2 makes guess
     cout << p2.getName() << ": enter your guess:\n";
     guessPos.input();
+
     // checks for valid input and changes coord values in map
     p1.getsHit(guessPos);
     
-    // TODO: updates score
+    // updates score
     updateScores(p2, p1, guessPos);
 
+
+    // displays partial map of player 1
     cout << endl << p1.getName() << "'s map for " << p2.getName() << " to view:\n";
+    p1.printGuessMap();
     
-    // TODO: displays partial map
-    // use GuessCoord values for this
-    p1.printFullMap();
     
     // TODO: display scores of player 2
 
