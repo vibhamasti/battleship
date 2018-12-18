@@ -53,6 +53,7 @@ public:
     
     // map functions
     void printFullMap();                        // prints complete map
+    void printGuessMap();                       // prints only tiles that have been guessed
     void drawShip(Ship);                        // changes 0 to 1 in the map
     
     // ship functions
@@ -65,6 +66,7 @@ public:
     
     // guess coordinate functions
     GuessCoord guessValidity(Coord);            // checks if an entered coordinate guess is valid
+    GuessCoord guessValidity(int, int);         // checs if an entered ordered pair guess is valid
     void getsHit(Coord);                        // updates map based on guessed coordinates
     MapCoord coordValue(Coord);                 // returns MapCoord value for a coordinate
     
