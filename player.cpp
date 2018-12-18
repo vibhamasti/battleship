@@ -97,7 +97,7 @@ bool Player::mapFree(Ship testShip) {
 }
 
 // checks if the guessed coordinates lie within the map
-// or have been guessed already
+// or have been guessed already (uses Coord)
 GuessCoord Player::guessValidity(Coord guess) {
     if (guess.x >= MAP_SIZE || guess.y >= MAP_SIZE) {
         return GuessCoord::outOfBounds;
@@ -108,6 +108,20 @@ GuessCoord Player::guessValidity(Coord guess) {
     }
     return GuessCoord::notYetGuessed;
 }
+
+// checks if the guessed coordinates lie within the map
+// or have been guessed already (uses int)
+GuessCoord Player::guessValidity(int x, int y) {
+    if (x >= MAP_SIZE || y >= MAP_SIZE) {
+        return GuessCoord::outOfBounds;
+    }
+    // if coordinate not empty and not shipExist
+    if (shipMap[y][x] != MapCoord::empty && shipMap[y][x] != MapCoord::shipExist) {
+        return GuessCoord::guessed;
+    }
+    return GuessCoord::notYetGuessed;
+}
+
 
 
 // draws testShip onto the shipMap
@@ -181,7 +195,7 @@ void Player::inputShips() {
     }
 }
 
-// prints the map
+// prints the full map
 void Player::printFullMap() {
     // prints x coordinates in a horizontal line
     cout << "\n   ";
@@ -199,6 +213,35 @@ void Player::printFullMap() {
         }
         cout << endl;
     }
+}
+
+
+// prints only the tiles that have been guessed
+void Player::printGuessMap() {
+
+    // prints x coordinates in a horizontal line
+    cout << "\n   ";
+    for (int j = 0; j < MAP_SIZE; ++j) {
+        cout << j << " ";
+        
+    }
+    cout << endl << endl;
+    
+    // prints y coordinates in a vertical line
+    for (int i = 0; i < MAP_SIZE; i++) {
+        cout << i << "  ";
+        for (int j = 0; j < MAP_SIZE; j++) {
+            // check guess validity
+            if (guessValidity(j, i) == GuessCoord::guessed) {
+                cout << (int) shipMap[i][j] << " ";
+            }
+            else {
+                cout << "X" << " ";
+            }
+        }
+        cout << endl;
+    }
+
 }
 
 // check if a ship has been sunk
