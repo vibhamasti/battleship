@@ -66,7 +66,7 @@ public:
     
     // guess coordinate functions
     GuessCoord guessValidity(Coord);            // checks if an entered coordinate guess is valid
-    GuessCoord guessValidity(int, int);         // checs if an entered ordered pair guess is valid
+    GuessCoord guessValidity(int, int);         // checs if an entered ordered pair guess is valids
     void getsHit(Coord);                        // updates map based on guessed coordinates
     MapCoord coordValue(Coord);                 // returns MapCoord value for a coordinate
     
