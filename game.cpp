@@ -3,12 +3,11 @@
 //  Battleship
 //
 
-
+#include "stdafx.h"
 #include "game.h"
-
+#include <fstream>
+#include<iostream>
 using namespace std;
-
-
 
 // constructor (resets game)
 Game::Game() {
@@ -21,23 +20,69 @@ bool Game::inPlay() {
 
 // TODO: function definition
 void Game::checkFile(char *pname) {
-    // check data file for p1
-    // if p1 exists (username)
-    // display old high score
-    // ask them to beat it
-    
-    // if does not exist
-    // ask if first time playing
-    // add name to data file with high score 0
-    // display high score
+	
+	// check data file for d1
+	fstream f1;
+	//New structure defined contains name and score ONLY
+	playerData d1;
+	//reads player info from file
+	playerData Readp;
+	
+	//copies data passed to function to the variable of new structure(playerData) 
+	strcpy(d1.name,pname);
+
+	//search
+	f1.open("playerNames.dat", ios::binary | ios::in);
+	while (!(f1.eof())){
+	f1.read((char*)&Readp, sizeof(Readp));
+	
+		if (strcmp(Readp.name,d1.name) == 0){	// if p1 exists (username)
+			isFound = true;
+			break;
+		}
+		
+		else
+			isFound = false;
+				
+	
+	}
+	f1.close();
+	
+	
+	//name exists
+	if (isFound == true){	
+		// display old high score
+		cout << "\nWelcome back! Your high score is--" << Readp.score;
+		// ask them to beat it
+		cout << "\nTry Beating it ! ";
+	}	
+	
+	//name does not exist and is added 
+	if (isFound == false) {
+		cout << "\nPlaying for the first time...\nYour score is set to 0 ";
+		// add name to data file with high score 0
+		d1.score = 0;
+		f1.open("playerNames.dat", ios::binary | ios::app);
+		f1.write((char*)&d1, sizeof(d1);
+		f1.close();
+	}
+
+
+		
+		
+		
+		// ask if first time playing<----------is this really required-B
+		
+		// display high score<-------Huh again ??
+	}
 }
 
 // function to update scores of player madeHit
 void Game::updateScores(Player madeHit, Player gotHit, Coord guessPos) {
-    // madeHit is the player whose round is being played
+    
+	// madeHit is the player whose round is being played
     // gotHit is the current player's opponent
-
-    // TODO: finish function
+	// TODO: finish function
 
 }
 
@@ -92,12 +137,11 @@ void Game::getPlayers() {
 void Game::play() {
     Coord guessPos;
     
-    //////////////
-    // PLAYER 1 //
-    //////////////
+    // PLAYER 1
 
     // player 1 makes guess
     cout << p1.getName() << ": enter your guess:\n";
+    
     guessPos.input();
     
     // checks for valid input and changes coord values in map
@@ -106,38 +150,35 @@ void Game::play() {
     // updates score
     updateScores(p1, p2, guessPos);
     
-
-    // displays partial map of player 2
     cout << endl << p2.getName() << "'s map for " << p1.getName() << " to view:\n";
-    p2.printGuessMap();
+    
+    // TODO: displays partial map and not entire map
+    // use GuessCoord values for this
+    p2.printFullMap();
     
     // TODO: display scores of player 1
     
-
     // TODO: check if game is won
     
     // TODO: clear screen
     
 
-    //////////////
-    // PLAYER 2 //
-    //////////////
+    // PLAYER 2
 
     // player 2 makes guess
     cout << p2.getName() << ": enter your guess:\n";
     guessPos.input();
-
     // checks for valid input and changes coord values in map
     p1.getsHit(guessPos);
     
-    // updates score
+    // TODO: updates score
     updateScores(p2, p1, guessPos);
 
-
-    // displays partial map of player 1
     cout << endl << p1.getName() << "'s map for " << p2.getName() << " to view:\n";
-    p1.printGuessMap();
     
+    // TODO: displays partial map
+    // use GuessCoord values for this
+    p1.printFullMap();
     
     // TODO: display scores of player 2
 
