@@ -11,7 +11,7 @@ using namespace std;
 
 // constructor
 Player::Player() {
-    score = 0;
+    pData.score = 0;
     
     // set the length of each ship (starting size 2)
     for (int i = 0; i <= NO_OF_SHIPS; ++i) {
@@ -29,12 +29,12 @@ Player::Player() {
 
 // increase score
 void Player::increaseScore(int n) {
-    score += n;
+    pData.score += n;
 }
 
 // returns name of player
 char* Player::getName() {
-    return name;
+    return pData.name;
 }
 
 // if ship lies within map and in empty coordinates
@@ -148,7 +148,7 @@ void Player::drawShip(Ship testShip) {
 // input the player name
 void Player::inputName() {
     cout << "\nEnter player name: ";
-    cin.getline(name, STR_LEN);
+    cin.getline(pData.name, STR_LEN);
 }
 
 
