@@ -70,7 +70,7 @@ public:
     // guess coordinate functions
     GuessCoord guessValidity(Coord);            // checks if an entered coordinate guess is valid
     GuessCoord guessValidity(int, int);         // checks if a guess pair is valid
-    void getsHit(Coord);                        // updates map based on guessed coordinates
+    Coord getsHit(Coord);                        // updates map based on guessed coordinates
     MapCoord coordValue(Coord);                 // returns MapCoord value for a coordinate
     
     // getter functions

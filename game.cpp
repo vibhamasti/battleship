@@ -132,7 +132,9 @@ void Game::getPlayers() {
 void Game::play() {
     Coord guessPos;
     
-    // PLAYER 1
+    //////////////
+    // PLAYER 1 //
+    //////////////
 
     // player 1 makes guess
     cout << p1.getName() << ": enter your guess:\n";
@@ -140,7 +142,7 @@ void Game::play() {
     guessPos.input();
     
     // checks for valid input and changes coord values in map
-    p2.getsHit(guessPos);
+    guessPos = p2.getsHit(guessPos);
     
     // updates score
     updateScores(p1, p2, guessPos);
@@ -158,13 +160,16 @@ void Game::play() {
     // TODO: clear screen
     
 
-    // PLAYER 2
+    //////////////
+    // PLAYER 2 //
+    //////////////
 
     // player 2 makes guess
     cout << p2.getName() << ": enter your guess:\n";
     guessPos.input();
+
     // checks for valid input and changes coord values in map
-    p1.getsHit(guessPos);
+    guessPos = p1.getsHit(guessPos);
     
     // TODO: updates score
     updateScores(p2, p1, guessPos);

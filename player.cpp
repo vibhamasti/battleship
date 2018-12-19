@@ -282,7 +282,7 @@ void Player::sink(Ship testShip) {
 }
 
 // player inputs a coordinate pair
-void Player::getsHit(Coord guess) {
+Coord Player::getsHit(Coord guess) {
     
     // if the coordinates have already been hit/lie out of bounds
     while (guessValidity(guess) != GuessCoord::notYetGuessed) {
@@ -322,4 +322,5 @@ void Player::getsHit(Coord guess) {
         }
         
     }
+    return guess;
 }
