@@ -30,6 +30,7 @@ enum class MapCoord {
     shipMiss                                    // 4, guessed
 };
 
+
 // whether a coordinate has been guessed or not
 enum class GuessCoord {
     outOfBounds,                                // outside the map
@@ -37,16 +38,19 @@ enum class GuessCoord {
     notYetGuessed                               // not yet been guessed
 };
 
+
 // structure of player name and score
 struct playerData {
    int score;                                  // player score
    char name[STR_LEN];                         // name of player
 };
 
+
+// player class
 class Player {
     Ship ships[NO_OF_SHIPS];                    // array of Ship objects
     MapCoord shipMap[MAP_SIZE][MAP_SIZE];       // 2D map of all coordinates
-    playerData pData;                            // name and score of player
+    playerData pData;                           // name and score of player
 public:
     Player();
     
@@ -57,7 +61,7 @@ public:
     // map functions
     void printFullMap();                        // prints complete map
     void printGuessMap();                       // prints map of guesses
-    void drawShip(Ship);                        // changes 0 to 1 in the map
+    void drawShip(Ship);                        // changes empty to shipExist in the map
     
     // ship functions
     bool inMap(Ship);                           // checks if a Ship object lies in player map
@@ -66,15 +70,17 @@ public:
     bool isSunk(Ship);                          // checks if a given ship is sunk 
     void sink(Ship);                            // sink a ship (changes
                                                 // CoordStatus::shipHit to CoordStatus::shipSunk)
+    bool allShipsSunk();                        // checks if all ships are sunk
     
     // guess coordinate functions
     GuessCoord guessValidity(Coord);            // checks if an entered coordinate guess is valid
     GuessCoord guessValidity(int, int);         // checks if a guess pair is valid
-    Coord getsHit(Coord);                        // updates map based on guessed coordinates
+    Coord getsHit(Coord);                       // updates map based on guessed coordinates
     MapCoord coordValue(Coord);                 // returns MapCoord value for a coordinate
     
     // getter functions
     char* getName();                            // returns player name
+    int getScore();                             // returns player score
     
     // score functions 
     void increaseScore(int);                    // increases score by a value

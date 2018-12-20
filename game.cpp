@@ -14,6 +14,8 @@ using namespace std;
 // constructor (resets game)
 Game::Game() {
     isWon = false;
+    p1HighScore = 0;
+    p2HighScore = 0;
 }
 
 bool Game::inPlay() {
@@ -21,7 +23,7 @@ bool Game::inPlay() {
 }
 
 // to check data file for pname
-void Game::checkFile(char *pname) {
+int Game::checkFile(char *pname) {
     
     bool isFound = false;                   // variable to state if player name exists
     fstream playerFile;                     // file that stores all player names	
@@ -54,14 +56,12 @@ void Game::checkFile(char *pname) {
 	if (isFound) {	
 		// display old high score
 		cout << "\nWelcome back, " << currentPlayer.name << "!\n";
-        cout << "Your high score is: " << currentPlayer.score << "\n";
-
+        
 	}	
 	
 	// if name does not exist 
 	else {
         cout << "\nHello, " << currentPlayer.name << "! First time playing?\n";
-		cout << "Your score is: 0\n";
 
 		// add name to data file with high score 0
 	    currentPlayer.score = 0;
@@ -72,8 +72,37 @@ void Game::checkFile(char *pname) {
 		playerFile.close();
 	}
 
+    // high score
+    cout << "Your high score is: " << currentPlayer.score << "\n";
 
+    return currentPlayer.score;
 	
+}
+
+// save new high score
+void Game::saveScore(char *pname, int pscore) {
+    fstream playerFile;                 // file with all the player names
+    playerData tempPlayer;
+    int pos = 0;
+
+    playerFile.open("playerNames.dat", ios::binary | ios::in | ios::out);
+
+    // read every player in file
+    while (playerFile.read((char *) &tempPlayer, sizeof(tempPlayer))) {
+
+        // store position of file pointer (end of record)
+        pos = playerFile.tellg();
+
+        // if player name found
+        if (strcmp(tempPlayer.name, pname) == 0) {
+            tempPlayer.score = pscore;
+            playerFile.seekg(pos - sizeof(tempPlayer), ios::beg);
+            playerFile.write((char* ) &tempPlayer, sizeof(tempPlayer));
+            break;
+        }
+
+    }
+
 }
 
 // function to update scores of player madeHit
@@ -96,7 +125,7 @@ void Game::getPlayers() {
     p1.inputName();
     
     // checks database for player 1's name
-    checkFile(p1.getName());        
+    p1HighScore = checkFile(p1.getName());        
     
     // input details of player 1's ships
     p1.inputShips();
@@ -105,6 +134,8 @@ void Game::getPlayers() {
     cout << "\n\n" << p1.getName() << "'s map\n\n";
     p1.printFullMap();
     
+    // TODO: clear screen
+
     // PLAYER 2
 
     // print player 2's empty map
@@ -118,7 +149,7 @@ void Game::getPlayers() {
     p2.inputName();
     
     // checks database for player 2's name
-    checkFile(p2.getName());        
+    p2HighScore = checkFile(p2.getName());        
     
     // input details of player 2's ships
     p2.inputShips();
@@ -127,6 +158,8 @@ void Game::getPlayers() {
     cout << "\n\n" << p2.getName() << "'s map\n\n";
     p2.printFullMap();
     
+
+    // TODO: clear screen
 }
 
 void Game::play() {
@@ -154,8 +187,20 @@ void Game::play() {
     
     // TODO: display scores of player 1
     
-    // TODO: check if game is won
-    
+    // check if game is won (check p2's ships)
+    if (p2.allShipsSunk()) {
+        // player 1 has won
+        cout << "\nCongratulations, " << p1.getName() << "!\n";
+        cout << "You have won the game with " << p1.getScore() << " points\n";
+
+        if (p1.getScore() > p1HighScore) {
+            cout << "New high score!\n";
+            saveScore(p1.getName(), p1.getScore());
+        }
+
+        isWon = true;
+    }
+
     // TODO: clear screen
     
 
@@ -181,7 +226,20 @@ void Game::play() {
     
     // TODO: display scores of player 2
 
-    // TODO: check if game is won
+    // check if game is won (check all of p1's ships)
+    if (p1.allShipsSunk()) {
+
+        // player 2 has won
+        cout << "\nCongratulations, " << p2.getName() << "!\n";
+        cout << "You have won the game with " << p2.getScore() << " points\n";
+
+        if (p2.getScore() > p2HighScore) {
+            cout << "New high score!\n";
+            saveScore(p2.getName(), p2.getScore());
+        }
+
+        isWon = true;
+    }
     
     // TODO: clear screen
     

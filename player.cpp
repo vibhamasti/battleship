@@ -37,6 +37,12 @@ char* Player::getName() {
     return pData.name;
 }
 
+// returns player score
+int Player::getScore() {
+    return pData.score;
+}
+
+
 // if ship lies within map and in empty coordinates
 ShipCoord Player::getStatus(Ship testShip) {
     // if the ship will exit the map
@@ -249,15 +255,15 @@ bool Player::isSunk(Ship testShip) {
     
     if (testShip.getOri() == 'h') {
         for (int i = testShip.getPos().x; i < testShip.getPos().x + testShip.getLen(); i++) {
-            if (shipMap[testShip.getPos().y][i] != MapCoord::shipHit)
-                return false;
+            if (shipMap[testShip.getPos().y][i] != MapCoord::shipHit && shipMap[testShip.getPos().y][i] != MapCoord::shipSunk)
+                return false; 
         }
         return true;
     }
     
     else {
         for(int i = testShip.getPos().y; i < testShip.getPos().y + testShip.getLen(); i++){
-            if (shipMap[i][testShip.getPos().x] != MapCoord::shipHit)
+            if (shipMap[i][testShip.getPos().x] != MapCoord::shipHit && shipMap[i][testShip.getPos().x] != MapCoord::shipSunk)
                 return false;
         }
         return true;
@@ -280,6 +286,17 @@ void Player::sink(Ship testShip) {
         
     }
 }
+
+// check if all ships have been sunk
+bool Player::allShipsSunk() {
+    for (int i = 0; i < NO_OF_SHIPS; ++i) {
+        if (!isSunk(ships[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
 
 // player inputs a coordinate pair
 Coord Player::getsHit(Coord guess) {
@@ -315,7 +332,7 @@ Coord Player::getsHit(Coord guess) {
     
     // check if a ship has been sunk
     for (int i = 0; i < NO_OF_SHIPS; ++i) {
-        
+        // check if a ship should be sunk
         if (isSunk(ships[i])) {
             // sink the ship by changing all the map values
             sink(ships[i]);

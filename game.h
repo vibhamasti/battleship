@@ -15,13 +15,15 @@
 
 class Game {
     Player p1, p2;
+    int p1HighScore, p2HighScore;               // high scores of two players
     std::fstream playerNames;                   // file that stores player names
     bool isWon;
 public:
     Game();
     void getPlayers();
-    void checkFile(char *);                     // TODO: define
-    bool inPlay();                              // TODO: define
+    int checkFile(char *);                      // checks file for high score
+    void saveScore(char *, int);                // save high score onto file                  
+    bool inPlay();                              
     void updateScores(Player, Player, Coord);   // TODO: define
     void play();
 };
