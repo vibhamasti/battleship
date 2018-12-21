@@ -17,7 +17,9 @@ int main() {
     // rules
     
     Game battleship;
-    battleship.getPlayers();
+    
+    // two player game
+    battleship.inputPlayers();
     
     while (battleship.inPlay()) {
         battleship.play();
