@@ -23,25 +23,23 @@ bool Game::inPlay() {
 }
 
 // to check data file for pname
-int Game::checkFile(char *pname) {
+void Game::checkFile(Player currentPlayer) {
     
     bool isFound = false;                   // variable to state if player name exists
     fstream playerFile;                     // file that stores all player names	
-	playerData currentPlayer;               // variable that contains name and score of player
-	playerData tempPlayer;                  // variable that reads player info from file
 	
-	// copies pnname to currentPlayer
-	strcpy(currentPlayer.name,pname);
-
+	playerData tempData;                  // variable that reads player info from file
+	
 	// open file
 	playerFile.open("playerNames.dat", ios::binary | ios::in);
 
     // search playerFile for currentPlayer
-	while (playerFile.read((char*) &tempPlayer, sizeof(tempPlayer))) {
+	while (playerFile.read((char*) &tempData, sizeof(tempData))) {
         
-        // if currentPlayer's name exists
-        if (strcmp(tempPlayer.name, currentPlayer.name) == 0) {
-            currentPlayer = tempPlayer;
+        // if currentPlayer's name exists on file
+        if (strcmp(tempData.name, currentPlayer.getName()) == 0) {
+            // copy saved high score onto currentPlayer
+            currentPlayer.setHighScore(tempData.score);
             isFound = true;
             break;
         }
@@ -52,30 +50,32 @@ int Game::checkFile(char *pname) {
 	playerFile.close();
 	
 	
-	// if name name exists
+	// if currentPlayer's name exists
 	if (isFound) {	
 		// display old high score
-		cout << "\nWelcome back, " << currentPlayer.name << "!\n";
-        
+		cout << "\nWelcome back, " << currentPlayer.getName() << "!\n";
 	}	
 	
 	// if name does not exist 
 	else {
-        cout << "\nHello, " << currentPlayer.name << "! First time playing?\n";
+        cout << "\nHello, " << currentPlayer.getName() << "! First time playing?\n";
 
-		// add name to data file with high score 0
-	    currentPlayer.score = 0;
+		// set player's high score to 
+	    currentPlayer.setHighScore(0);
+
+        // store currentPlayer's data onto temp variable
+        strcpy(tempData.name, currentPlayer.getName());
+        tempData.score = currentPlayer.getHighScore();
 
         // open file
 		playerFile.open("playerNames.dat", ios::binary | ios::app);
-		playerFile.write((char*) &currentPlayer, sizeof(currentPlayer));
+		playerFile.write((char*) &tempData, sizeof(tempData));
 		playerFile.close();
 	}
 
     // high score
-    cout << "Your high score is: " << currentPlayer.score << "\n";
+    cout << "Your high score is: " << currentPlayer.getHighScore() << "\n";
 
-    return currentPlayer.score;
 	
 }
 
@@ -105,6 +105,7 @@ void Game::saveScore(char *pname, int pscore) {
 
 }
 
+
 // function to update scores of player madeHit
 void Game::updateScores(Player madeHit, Player gotHit, Coord guessPos) {
     
@@ -114,54 +115,85 @@ void Game::updateScores(Player madeHit, Player gotHit, Coord guessPos) {
 
 }
 
-void Game::getPlayers() {
-    // PLAYER 1
+// input's single player's data
+void Game::inputPlayerData(Player currentPlayer) {
+
+    // print currentPlayer's empty map
+    currentPlayer.printFullMap();
     
-    // print player 1's empty map
-    cout << "\n\n\nPlayer one\n";
-    p1.printFullMap();
+    // input currentPlayer's name
+    currentPlayer.inputName();
     
-    // input player 1's name
-    p1.inputName();
+    // checks database for currentPlayer's name and high score
+    checkFile(currentPlayer);        
     
-    // checks database for player 1's name
-    p1HighScore = checkFile(p1.getName());        
+    // input details of currentPlayer's ships
+    currentPlayer.inputShips();
     
-    // input details of player 1's ships
-    p1.inputShips();
-    
-    // print player 1's map with ships
-    cout << "\n\n" << p1.getName() << "'s map\n\n";
-    p1.printFullMap();
+    // print currentPlayer's map with ships
+    cout << "\n\n" << currentPlayer.getName() << "'s map\n\n";
+    currentPlayer.printFullMap();
     
     // TODO: clear screen
 
+}
+
+// inputs data of two players
+void Game::inputPlayers() {
+    // PLAYER 1
+
+    cout << "\n\n\nPlayer one\n";
+    inputPlayerData(p1);
+
     // PLAYER 2
 
-    // print player 2's empty map
     cout << "\n\n\nPlayer two\n";
-    p2.printFullMap();
+    inputPlayerData(p2); 
+
+}
+
+// TODO: check TODOs
+void Game::playRound(Player madeHit, Player gotHit) {
+    Coord guessPos;
     
+    // madeHit makes guess by entering coordinates
+    cout << madeHit.getName() << ": enter your guess:\n";
+    guessPos.input();
     
-    cin.ignore();
+
+    // gotHit gets hit at valid coordinate
+    guessPos = gotHit.getsHit(guessPos);
     
-    // input player 2's name
-    p2.inputName();
+    // TODO: updates scores of madeHit and gotHit
+    updateScores(madeHit, gotHit, guessPos);
     
-    // checks database for player 2's name
-    p2HighScore = checkFile(p2.getName());        
+
+    // displays partial map of gotHit so madeHit can see it
+    cout << endl << gotHit.getName() << "'s map for " << madeHit.getName() << " to view:\n";
+    gotHit.printGuessMap();
     
-    // input details of player 2's ships
-    p2.inputShips();
+    // TODO: display scores of madeHit
     
-    // print player 2's map with ships
-    cout << "\n\n" << p2.getName() << "'s map\n\n";
-    p2.printFullMap();
-    
+    // check if game is won (check gotHit's ships)
+    if (gotHit.allShipsSunk()) {
+        
+        // makesHit has won
+        cout << "\nCongratulations, " << madeHit.getName() << "!\n";
+        cout << "You have won the game with " << madeHit.getScore() << " points\n";
+
+        // update high score onto data file
+        if (madeHit.getScore() > madeHit.getHighScore()) {
+            cout << "New high score!\n";
+            saveScore(madeHit.getName(), madeHit.getScore());
+        }
+
+        isWon = true;
+    }
 
     // TODO: clear screen
 }
 
+// play the game (two rounds)
 void Game::play() {
     Coord guessPos;
     
@@ -169,78 +201,14 @@ void Game::play() {
     // PLAYER 1 //
     //////////////
 
-    // player 1 makes guess
-    cout << p1.getName() << ": enter your guess:\n";
-    
-    guessPos.input();
-    
-    // checks for valid input and changes coord values in map
-    guessPos = p2.getsHit(guessPos);
-    
-    // updates score
-    updateScores(p1, p2, guessPos);
-    
-
-    // displays partial map of player 2
-    cout << endl << p2.getName() << "'s map for " << p1.getName() << " to view:\n";
-    p2.printGuessMap();
-    
-    // TODO: display scores of player 1
-    
-    // check if game is won (check p2's ships)
-    if (p2.allShipsSunk()) {
-        // player 1 has won
-        cout << "\nCongratulations, " << p1.getName() << "!\n";
-        cout << "You have won the game with " << p1.getScore() << " points\n";
-
-        if (p1.getScore() > p1HighScore) {
-            cout << "New high score!\n";
-            saveScore(p1.getName(), p1.getScore());
-        }
-
-        isWon = true;
-    }
-
-    // TODO: clear screen
-    
+    playRound(p1, p2);
 
     //////////////
     // PLAYER 2 //
     //////////////
 
-    // player 2 makes guess
-    cout << p2.getName() << ": enter your guess:\n";
-    guessPos.input();
+    playRound(p2, p1);
 
-    // checks for valid input and changes coord values in map
-    guessPos = p1.getsHit(guessPos);
-    
-     // updates score
-    updateScores(p2, p1, guessPos);
-
-
-    // displays partial map of player 1
-    cout << endl << p1.getName() << "'s map for " << p2.getName() << " to view:\n";
-    p1.printGuessMap();
-
-    
-    // TODO: display scores of player 2
-
-    // check if game is won (check all of p1's ships)
-    if (p1.allShipsSunk()) {
-
-        // player 2 has won
-        cout << "\nCongratulations, " << p2.getName() << "!\n";
-        cout << "You have won the game with " << p2.getScore() << " points\n";
-
-        if (p2.getScore() > p2HighScore) {
-            cout << "New high score!\n";
-            saveScore(p2.getName(), p2.getScore());
-        }
-
-        isWon = true;
-    }
-    
-    // TODO: clear screen
+    // TODO: increase number of shots fired
     
 }
