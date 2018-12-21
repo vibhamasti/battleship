@@ -51,6 +51,7 @@ class Player {
     Ship ships[NO_OF_SHIPS];                    // array of Ship objects
     MapCoord shipMap[MAP_SIZE][MAP_SIZE];       // 2D map of all coordinates
     playerData pData;                           // name and score of player
+    int highScore;
 public:
     Player();
     
@@ -74,17 +75,17 @@ public:
     
     // guess coordinate functions
     GuessCoord guessValidity(Coord);            // checks if an entered coordinate guess is valid
-    GuessCoord guessValidity(int, int);         // checks if a guess pair is valid
     Coord getsHit(Coord);                       // updates map based on guessed coordinates
     MapCoord coordValue(Coord);                 // returns MapCoord value for a coordinate
     
     // getter functions
     char* getName();                            // returns player name
     int getScore();                             // returns player score
-    
-    // score functions 
-    void increaseScore(int);                    // increases score by a value
+    int getHighScore();                         // returns player high score
 
+    // setter/modify functions functions 
+    void increaseScore(int);                    // increases score by a value
+    void setHighScore(int);                     // sets high score to a value
 };
 
 
