@@ -13,13 +13,46 @@ using namespace std;
 
 // constructor (resets game)
 Game::Game() {
-    isWon = false;
-    p1HighScore = 0;
-    p2HighScore = 0;
+    hasEnded = false;
 }
 
 bool Game::inPlay() {
-    return !isWon;
+    return !hasEnded;
+}
+
+void Game::printRules() {
+    char ch;
+    cout << "\n\nWelcome to Battleship\n\n";
+
+    cout << "This is a two-player game of battleship.\n";
+    cout << "Each player will enter the coordinates of their\n";
+    cout << "ships one-by-one and orient them to their wish.\n\n";
+
+    cout << "The objective of the game is to try and guess the\n";
+    cout << "location of your opponent's ships by entering coordinates.\n";
+    cout << "If a guess is at the loaction of a ship, it is called a\n";
+    cout << "hit. If the guess is a water tile, it is called a miss.\n";
+    cout << "If all of the coordinates of one ship have been hit,\n";
+    cout << "the ship is said to have been sunk\n";
+
+
+    cout << "The winner of the game is the one who has sunk their\n";
+    cout << "opponent's ships in the least number of guesses.\n\n";
+
+    cout << "Game board symbols:\n";
+    cout << "0 - empty tile\n";
+    cout << "1 - ship present in tile\n";
+    cout << "2 - ship has been hit\n";
+    cout << "3 - ship has been sunk\n";
+    cout << "4 - water has been hit (miss)\n";
+
+    cout << "\nScoring is based on number of shots made and\n";
+    cout << "percentage of success.\n\n";
+
+    cout << "Good luck!\n\n";
+
+    cout << "Are you ready to play? (press enter)";
+    cin.get(ch);
 }
 
 // to check data file for pname
@@ -28,7 +61,7 @@ void Game::checkFile(Player currentPlayer) {
     bool isFound = false;                   // variable to state if player name exists
     fstream playerFile;                     // file that stores all player names	
 	
-	playerData tempData;                  // variable that reads player info from file
+	playerData tempData;                    // variable that reads player info from file
 	
 	// open file
 	playerFile.open("playerNames.dat", ios::binary | ios::in);
@@ -187,7 +220,7 @@ void Game::playRound(Player madeHit, Player gotHit) {
             saveScore(madeHit.getName(), madeHit.getScore());
         }
 
-        isWon = true;
+        hasEnded = true;
     }
 
     // TODO: clear screen

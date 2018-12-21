@@ -15,10 +15,13 @@ using namespace std;
 
 int main() {
     // rules
-    
+
     Game battleship;
     
-    // two player game
+    // print rules of the game
+    battleship.printRules();
+
+    // input two players' details
     battleship.inputPlayers();
     
     while (battleship.inPlay()) {
