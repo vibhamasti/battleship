@@ -12,7 +12,8 @@ using namespace std;
 // constructor
 Player::Player() {
     pData.score = 0;
-    
+    highScore = 0;
+
     // set the length of each ship (starting size 2)
     for (int i = 0; i <= NO_OF_SHIPS; ++i) {
         ships[i].setLen(i + 2);
@@ -26,6 +27,12 @@ Player::Player() {
     }
     
 }
+
+// sets high score
+void Player::setHighScore(int hs) {
+    highScore = hs;
+}
+
 
 // increase score
 void Player::increaseScore(int n) {
@@ -42,6 +49,10 @@ int Player::getScore() {
     return pData.score;
 }
 
+// returns player high score
+int Player::getHighScore() {
+    return highScore;
+}
 
 // if ship lies within map and in empty coordinates
 ShipCoord Player::getStatus(Ship testShip) {
@@ -114,20 +125,6 @@ GuessCoord Player::guessValidity(Coord guess) {
     }
     return GuessCoord::notYetGuessed;
 }
-
-// checks if the guessed coordinates lie within the map
-// or have been guessed already (uses int)
-GuessCoord Player::guessValidity(int x, int y) {
-    if (x >= MAP_SIZE || y >= MAP_SIZE) {
-        return GuessCoord::outOfBounds;
-    }
-    // if coordinate not empty and not shipExist
-    if (shipMap[y][x] != MapCoord::empty && shipMap[y][x] != MapCoord::shipExist) {
-        return GuessCoord::guessed;
-    }
-    return GuessCoord::notYetGuessed;
-}
-
 
 
 // draws testShip onto the shipMap
@@ -238,7 +235,7 @@ void Player::printGuessMap() {
         cout << i << "  ";
         for (int j = 0; j < MAP_SIZE; j++) {
             // check guess validity
-            if (guessValidity(j, i) == GuessCoord::guessed) {
+            if (guessValidity(Coord(j, i)) == GuessCoord::guessed) {
                 cout << (int) shipMap[i][j] << " ";
             }
             else {
