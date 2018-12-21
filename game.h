@@ -20,12 +20,20 @@ class Game {
     bool isWon;
 public:
     Game();
-    void getPlayers();
-    int checkFile(char *);                      // checks file for high score
+    
     void saveScore(char *, int);                // save high score onto file                  
-    bool inPlay();                              
+                                  
     void updateScores(Player, Player, Coord);   // TODO: define
-    void play();
+    
+    // game initialise functions
+    void inputPlayers();
+    void inputPlayerData(Player);
+    void checkFile(Player);                      // checks file for name and high score
+
+    // game play functions
+    void play();                                // play the game by playing multiple rounds
+    void playRound(Player, Player);             // play one round of hitting/scoring/printing
+    bool inPlay();
 };
 
 
