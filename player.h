@@ -70,7 +70,7 @@ public:
     ShipCoord getStatus(Ship);                  // returns the validity of Ship object's coordinates
     bool isSunk(Ship);                          // checks if a given ship is sunk 
     void sink(Ship);                            // sink a ship (changes
-                                                // CoordStatus::shipHit to CoordStatus::shipSunk)
+                                                // MapCoord::shipHit to MapCoord::shipSunk)
     bool allShipsSunk();                        // checks if all ships are sunk
     
     // guess coordinate functions
