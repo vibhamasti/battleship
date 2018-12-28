@@ -52,11 +52,13 @@ void Game::printRules() {
     cout << "Good luck!\n\n";
 
     cout << "Are you ready to play? (press enter)";
-    cin.get(ch);
+    while(cin.get(ch)) {
+        if (ch == '\n') break;
+    };
 }
 
 // to check data file for pname
-void Game::checkFile(Player currentPlayer) {
+void Game::checkFile(Player &currentPlayer) {
     
     bool isFound = false;                   // variable to state if player name exists
     fstream playerFile;                     // file that stores all player names	
@@ -136,11 +138,14 @@ void Game::saveScore(char *pname, int pscore) {
 
     }
 
+    // close the file
+    playerFile.close();
+
 }
 
 
 // function to update scores of player madeHit
-void Game::updateScores(Player madeHit, Player gotHit, Coord guessPos) {
+void Game::updateScores(Player &madeHit, Player &gotHit, Coord &guessPos) {
     
 	// madeHit is the player whose round is being played
     // gotHit is the current player's opponent
@@ -149,7 +154,7 @@ void Game::updateScores(Player madeHit, Player gotHit, Coord guessPos) {
 }
 
 // input's single player's data
-void Game::inputPlayerData(Player currentPlayer) {
+void Game::inputPlayerData(Player &currentPlayer) {
 
     // print currentPlayer's empty map
     currentPlayer.printFullMap();
@@ -186,7 +191,7 @@ void Game::inputPlayers() {
 }
 
 // TODO: check TODOs
-void Game::playRound(Player madeHit, Player gotHit) {
+void Game::playRound(Player &madeHit, Player &gotHit) {
     Coord guessPos;
     
     // madeHit makes guess by entering coordinates
