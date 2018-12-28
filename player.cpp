@@ -151,7 +151,7 @@ void Player::drawShip(Ship testShip) {
 // input the player name
 void Player::inputName() {
     cout << "\nEnter player name: ";
-    cin.getline(pData.name, STR_LEN);
+    cin >> pData.name;
 }
 
 
