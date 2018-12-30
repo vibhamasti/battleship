@@ -13,6 +13,8 @@
 #define STR_LEN 20
 
 
+#define INF ((MAP_SIZE * MAP_SIZE) + 1)
+
 // validity of coordinates for a ship
 enum class ShipCoord {
     outOfBounds,                                // outside the map
@@ -41,8 +43,8 @@ enum class GuessCoord {
 
 // structure of player name and score
 struct playerData {
-   int score;                                  // player score
-   char name[STR_LEN];                         // name of player
+   int turns;                                   // player turns
+   char name[STR_LEN];                          // name of player
 };
 
 
@@ -50,8 +52,8 @@ struct playerData {
 class Player {
     Ship ships[NO_OF_SHIPS];                    // array of Ship objects
     MapCoord shipMap[MAP_SIZE][MAP_SIZE];       // 2D map of all coordinates
-    playerData pData;                           // name and score of player
-    int highScore;
+    playerData pData;                           // name and no of turns of player
+    int minTurns;                               // best turn count
 public:
     Player();
     
@@ -80,12 +82,12 @@ public:
     
     // getter functions
     char* getName();                            // returns player name
-    int getScore();                             // returns player score
-    int getHighScore();                         // returns player high score
+    int getTurns();                             // returns player score
+    int getMinTurns();                          // returns min no of turns
 
     // setter/modify functions functions 
-    void increaseScore(int);                    // increases score by a value
-    void setHighScore(int);                     // sets high score to a value
+    void increaseTurns();                       // increases the number of turns
+    void setMinTurns(int);                      // sets high score to a value
 };
 
 

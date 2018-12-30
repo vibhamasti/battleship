@@ -30,9 +30,8 @@ public:
     // game play functions
     void play();                                    // play the game by playing multiple rounds
     void playRound(Player&, Player&);               // play one round of hitting/scoring/printing
-    void updateScores(Player&, Player&, Coord&);    // TODO: define
     bool inPlay();
-    void saveScore(char *, int);                    // save high score onto file      
+    void saveBestTurns(char *, int);                    // save high score onto file      
 };
 
 

@@ -11,8 +11,8 @@ using namespace std;
 
 // constructor
 Player::Player() {
-    pData.score = 0;
-    highScore = 0;
+    pData.turns = 0;
+    minTurns = INF;
 
     // set the length of each ship (starting size 2)
     for (int i = 0; i <= NO_OF_SHIPS; ++i) {
@@ -29,14 +29,14 @@ Player::Player() {
 }
 
 // sets high score
-void Player::setHighScore(int hs) {
-    highScore = hs;
+void Player::setMinTurns(int mt) {
+    minTurns = mt;
 }
 
 
 // increase score
-void Player::increaseScore(int n) {
-    pData.score += n;
+void Player::increaseTurns() {
+    pData.turns++;
 }
 
 // returns name of player
@@ -44,14 +44,13 @@ char* Player::getName() {
     return pData.name;
 }
 
-// returns player score
-int Player::getScore() {
-    return pData.score;
+int Player::getTurns() {
+    return pData.turns;
 }
 
 // returns player high score
-int Player::getHighScore() {
-    return highScore;
+int Player::getMinTurns() {
+    return minTurns;
 }
 
 // if ship lies within map and in empty coordinates
