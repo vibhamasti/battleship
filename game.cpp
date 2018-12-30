@@ -148,19 +148,42 @@ void Game::saveScore(char *pname, int pscore) {
 void Game::updateScores(Player &madeHit, Player &gotHit, Coord &guessPos) {
     
 	// madeHit is the player whose round is being played
+    switch (gotHit.coordValue(guessPos)) {
+        // coordniate cannot empty
+        case MapCoord::shipExist: {
+
+        }
+        case MapCoord::shipHit: {
+
+        }
+        case MapCoord::shipMiss: {
+
+        }
+        case MapCoord::shipSunk: {
+
+        }
+    }
     // gotHit is the current player's opponent
 	// TODO: finish function
 
 }
 
 // input's single player's data
-void Game::inputPlayerData(Player &currentPlayer) {
+void Game::inputPlayerData(Player &currentPlayer, Player &other) {
 
     // print currentPlayer's empty map
     currentPlayer.printFullMap();
     
-    // input currentPlayer's name
+    // input currentPlayer's name (ensure it is unique)
+    
     currentPlayer.inputName();
+    
+    while (!strcmp(currentPlayer.getName(), other.getName())) {
+        cout << currentPlayer.getName() << " is already playing.\n";
+        currentPlayer.inputName();
+    }
+    
+
     
     // checks database for currentPlayer's name and high score
     checkFile(currentPlayer);        
@@ -172,28 +195,49 @@ void Game::inputPlayerData(Player &currentPlayer) {
     cout << "\n\n" << currentPlayer.getName() << "'s map\n\n";
     currentPlayer.printFullMap();
     
+    
+
     // TODO: clear screen
 
 }
 
 // inputs data of two players
 void Game::inputPlayers() {
+    char ch;
     // PLAYER 1
 
     cout << "\n\n\nPlayer one\n";
-    inputPlayerData(p1);
+    inputPlayerData(p1, p2);
+
+    cin.ignore();
+
+    // waiting for player 2
+    // wait for player 2
+    cout << "Call player 2: (press enter)";
+    while(cin.get(ch)) {
+        if (ch == '\n') break;
+    };
 
     // PLAYER 2
 
     cout << "\n\n\nPlayer two\n";
-    inputPlayerData(p2); 
+    inputPlayerData(p2, p1); 
 
 }
 
 // TODO: check TODOs
 void Game::playRound(Player &madeHit, Player &gotHit) {
     Coord guessPos;
-    
+
+    // TODO: clear
+    cout << endl << endl;
+    cout << madeHit.getName() << ": " << gotHit.getName() << "'s current map\n\n";
+
+    // print current guess map gotHit
+    gotHit.printGuessMap();
+
+    cout << endl << endl;
+
     // madeHit makes guess by entering coordinates
     cout << madeHit.getName() << ": enter your guess:\n";
     guessPos.input();
@@ -233,19 +277,48 @@ void Game::playRound(Player &madeHit, Player &gotHit) {
 
 // play the game (two rounds)
 void Game::play() {
-    Coord guessPos;
+    char ch;
     
     //////////////
     // PLAYER 1 //
     //////////////
 
+    cin.ignore();
+
+    // wait for player 1
+    cout << "\nCall " << p1.getName() << ": (press enter)";
+    while(cin.get(ch)) {
+        if (ch == '\n') break;
+    };
+
     playRound(p1, p2);
+
+    // check if game has ended
+    if (hasEnded) {
+        return;
+    }
+
 
     //////////////
     // PLAYER 2 //
     //////////////
 
+    cin.ignore();
+    
+    // wait for player 2
+    cout << "\nCall " << p2.getName() << ": (press enter)";
+    while(cin.get(ch)) {
+        if (ch == '\n') break;
+    };
+
     playRound(p2, p1);
+
+    // check if game has ended
+    if (hasEnded) {
+        return;
+    }
+
+    
 
     // TODO: increase number of shots fired
     
