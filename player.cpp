@@ -239,7 +239,8 @@ void Player::printGuessMap() {
                 cout << (int) shipMap[i][j] << " ";
             }
             else {
-                cout << "X" << " ";
+                // print an empty tile
+                cout << "_" << " ";
             }
         }
         cout << endl;
