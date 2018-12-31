@@ -54,6 +54,7 @@ void Game::printRules() {
 
     cout << "Are you ready to play? (press enter)";
     while(cin.get(ch)) {
+        // TODO: clear screen if enter is pressed
         if (ch == '\n') break;
     };
 }
@@ -109,12 +110,9 @@ void Game::checkFile(Player &currentPlayer) {
 		playerFile.write((char*) &tempData, sizeof(tempData));
 		playerFile.close();
 	}
-
-    
-	
 }
 
-// save new high score
+// save new best attempt
 void Game::saveBestTurns(char *pname, int pturns) {
     fstream playerFile;                 // file with all the player names
     playerData tempPlayer;
@@ -159,8 +157,6 @@ void Game::inputPlayerData(Player &currentPlayer, Player &other) {
         currentPlayer.inputName();
     }
     
-
-    
     // checks database for currentPlayer's name and high score
     checkFile(currentPlayer);        
     
@@ -170,10 +166,7 @@ void Game::inputPlayerData(Player &currentPlayer, Player &other) {
     // print currentPlayer's map with ships
     cout << "\n\n" << currentPlayer.getName() << "'s map\n\n";
     currentPlayer.printFullMap();
-    
-    
 
-    // TODO: clear screen
 
 }
 
@@ -193,6 +186,8 @@ void Game::inputPlayers() {
     while(cin.get(ch)) {
         if (ch == '\n') break;
     };
+    
+    // TODO: clear screen
 
     // PLAYER 2
 
@@ -208,7 +203,6 @@ void Game::playRound(Player &madeHit, Player &gotHit) {
     // update number of turns by 1
     madeHit.increaseTurns();
 
-    // TODO: clear screen
     cout << endl << endl;
     cout << madeHit.getName() << ": turn " << madeHit.getTurns() << endl;
     cout << gotHit.getName() << "'s current map\n\n";
@@ -253,9 +247,7 @@ void Game::playRound(Player &madeHit, Player &gotHit) {
 void Game::play() {
     char ch;
     
-    //////////////
-    // PLAYER 1 //
-    //////////////
+    // Player 1
 
     cin.ignore();
 
@@ -265,6 +257,8 @@ void Game::play() {
         if (ch == '\n') break;
     };
 
+    // TODO: clear screen
+
     playRound(p1, p2);
 
     // check if game has ended
@@ -272,10 +266,7 @@ void Game::play() {
         return;
     }
 
-
-    //////////////
-    // PLAYER 2 //
-    //////////////
+    // Player 2
 
     cin.ignore();
     
@@ -285,15 +276,13 @@ void Game::play() {
         if (ch == '\n') break;
     };
 
+    // TODO: clear screen
+
     playRound(p2, p1);
 
     // check if game has ended
     if (hasEnded) {
         return;
     }
-
-    
-
-    // TODO: increase number of shots fired
     
 }
