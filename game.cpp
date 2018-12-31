@@ -67,7 +67,7 @@ void Game::checkFile(Player &currentPlayer) {
     bool isFound = false;                   // variable to state if player name exists
     fstream playerFile;                     // file that stores all player names	
 	
-	playerData tempData;                    // variable that reads player info from file
+	PlayerData tempData;                    // variable that reads player info from file
 	
 	// open file
 	playerFile.open("playerNames.dat", ios::binary | ios::in);
@@ -117,7 +117,7 @@ void Game::checkFile(Player &currentPlayer) {
 // save new best attempt
 void Game::saveBestTurns(char *pname, int pturns) {
     fstream playerFile;                 // file with all the player names
-    playerData tempPlayer;
+    PlayerData tempPlayer;
     int pos = 0;
 
     playerFile.open("playerNames.dat", ios::binary | ios::in | ios::out);
@@ -235,7 +235,7 @@ void Game::playRound(Player &madeHit, Player &gotHit) {
         cout << "You have won the game in " << madeHit.getTurns() << " turns\n";
 
         cout << "Hard luck, " << gotHit.getName() << "!\n";
-        
+
         // update best turns onto data file
         if (madeHit.getTurns() < madeHit.getMinTurns()) {
             cout << "New best attempt!\n";
