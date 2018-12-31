@@ -12,8 +12,7 @@
 #define MAP_SIZE 10
 #define STR_LEN 20
 
-
-#define INF ((MAP_SIZE * MAP_SIZE) + 1)
+#define INF MAP_SIZE * MAP_SIZE + 1;
 
 // validity of coordinates for a ship
 enum class ShipCoord {
@@ -63,6 +62,7 @@ public:
     
     // map functions
     void printFullMap();                        // prints complete map
+    char symbol(MapCoord);                      // convert a MapCoord value to a symbol
     void printGuessMap();                       // prints map of guesses
     void drawShip(Ship);                        // changes empty to shipExist in the map
     

@@ -197,6 +197,26 @@ void Player::inputShips() {
     }
 }
 
+char Player::symbol(MapCoord val) {
+    switch (val) {
+        case MapCoord::empty: {
+            return '0';
+        }
+        case MapCoord::shipExist: {
+            return '1';
+        }
+        case MapCoord::shipHit: {
+            return 'H';
+        }
+        case MapCoord::shipSunk: {
+            return 'S';
+        }
+        case MapCoord::shipMiss: {
+            return 'W';
+        }
+    }
+}
+
 // prints the full map
 void Player::printFullMap() {
     // prints x coordinates in a horizontal line
@@ -211,7 +231,7 @@ void Player::printFullMap() {
     for (int i = 0; i < MAP_SIZE; i++) {
         cout << i << "  ";
         for (int j = 0; j < MAP_SIZE; j++) {
-            cout << (int) shipMap[i][j] << " ";
+            cout << symbol(shipMap[i][j]) << " ";
         }
         cout << endl;
     }
@@ -235,7 +255,7 @@ void Player::printGuessMap() {
         for (int j = 0; j < MAP_SIZE; j++) {
             // check guess validity
             if (guessValidity(Coord(j, i)) == GuessCoord::guessed) {
-                cout << (int) shipMap[i][j] << " ";
+                cout << symbol(shipMap[i][j]) << " ";
             }
             else {
                 // print an empty tile
