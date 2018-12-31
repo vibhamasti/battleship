@@ -41,7 +41,7 @@ enum class GuessCoord {
 
 
 // structure of player name and score
-struct playerData {
+struct PlayerData {
    int turns;                                   // player turns
    char name[STR_LEN];                          // name of player
 };
@@ -51,7 +51,7 @@ struct playerData {
 class Player {
     Ship ships[NO_OF_SHIPS];                    // array of Ship objects
     MapCoord shipMap[MAP_SIZE][MAP_SIZE];       // 2D map of all coordinates
-    playerData pData;                           // name and no of turns of player
+    PlayerData pData;                           // name and no of turns of player
     int minTurns;                               // best turn count
 public:
     Player();
