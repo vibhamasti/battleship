@@ -40,12 +40,14 @@ void Game::printRules() {
     cout << "opponent's ships in the least number of guesses.\n\n";
 
     cout << "Game board symbols:\n";
+    cout << "\nWhile entering ships:\n";
     cout << "0 - empty tile\n";
     cout << "1 - ship present in tile\n";
+    cout << "\nWhile guessing:\n";
     cout << "H - ship has been hit\n";
     cout << "S - ship has been sunk\n";
     cout << "W - water has been hit (miss)\n";
-    cout << "_ - unvisited tile\n";
+    cout << "_ - unvisited tile (not yet guessed)\n";
 
     cout << "\nScoring is based on number of shots made.\n\n";
     // cout << "and percentage of success.\n\n";
@@ -232,6 +234,8 @@ void Game::playRound(Player &madeHit, Player &gotHit) {
         cout << "\nCongratulations, " << madeHit.getName() << "!\n";
         cout << "You have won the game in " << madeHit.getTurns() << " turns\n";
 
+        cout << "Hard luck, " << gotHit.getName() << "!\n";
+        
         // update best turns onto data file
         if (madeHit.getTurns() < madeHit.getMinTurns()) {
             cout << "New best attempt!\n";

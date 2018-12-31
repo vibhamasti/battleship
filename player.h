@@ -12,7 +12,7 @@
 #define MAP_SIZE 10
 #define STR_LEN 20
 
-#define INF MAP_SIZE * MAP_SIZE + 1;
+#define INF MAP_SIZE * MAP_SIZE + 1
 
 // validity of coordinates for a ship
 enum class ShipCoord {
