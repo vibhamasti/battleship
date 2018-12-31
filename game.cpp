@@ -42,12 +42,13 @@ void Game::printRules() {
     cout << "Game board symbols:\n";
     cout << "0 - empty tile\n";
     cout << "1 - ship present in tile\n";
-    cout << "2 - ship has been hit\n";
-    cout << "3 - ship has been sunk\n";
-    cout << "4 - water has been hit (miss)\n";
+    cout << "H - ship has been hit\n";
+    cout << "S - ship has been sunk\n";
+    cout << "W - water has been hit (miss)\n";
+    cout << "_ - unvisited tile\n";
 
-    cout << "\nScoring is based on number of shots made and\n";
-    cout << "percentage of success.\n\n";
+    cout << "\nScoring is based on number of shots made.\n\n";
+    // cout << "and percentage of success.\n\n";
 
     cout << "Good luck!\n\n";
 
