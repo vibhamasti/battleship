@@ -24,9 +24,9 @@ int main() {
     // input two players' details
     battleship.inputPlayers();
     
+    // play the game while no one has one
     while (battleship.inPlay()) {
-        battleship.play();
-        
+        battleship.play();   
     }
     
     // TODO: un-comment

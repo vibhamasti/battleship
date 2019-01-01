@@ -150,10 +150,10 @@ void Game::inputPlayerData(Player &currentPlayer, Player &other) {
     // print currentPlayer's empty map
     currentPlayer.printFullMap();
     
-    // input currentPlayer's name (ensure it is unique)
-    
+    // input currentPlayer's name (ensure it is unique) 
     currentPlayer.inputName();
     
+    // unique name
     while (!strcmp(currentPlayer.getName(), other.getName())) {
         cout << currentPlayer.getName() << " is already playing.\n";
         currentPlayer.inputName();
@@ -198,7 +198,7 @@ void Game::inputPlayers() {
 
 }
 
-// TODO: check TODOs
+// play a game round
 void Game::playRound(Player &madeHit, Player &gotHit) {
     Coord guessPos;
 
@@ -234,13 +234,13 @@ void Game::playRound(Player &madeHit, Player &gotHit) {
         cout << "\nCongratulations, " << madeHit.getName() << "!\n";
         cout << "You have won the game in " << madeHit.getTurns() << " turns\n";
 
-        cout << "Hard luck, " << gotHit.getName() << "!\n";
-
         // update best turns onto data file
         if (madeHit.getTurns() < madeHit.getMinTurns()) {
             cout << "New best attempt!\n";
             saveBestTurns(madeHit.getName(), madeHit.getTurns());
         }
+
+        cout << "Hard luck, " << gotHit.getName() << "!\n";
 
         hasEnded = true;
     }
