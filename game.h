@@ -24,7 +24,6 @@ public:
     void printRules();
     void inputPlayerData(Player&, Player&);         // input player name and ships
     void checkFile(Player&);                        // checks file for name and high score
-    bool nameExists(char*);                         // checks if player name exists
 
     // game play functions
     void play();                                    // play the game by playing multiple rounds
