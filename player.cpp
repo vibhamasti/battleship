@@ -69,11 +69,6 @@ ShipCoord Player::getStatus(Ship testShip) {
     return ShipCoord::valid;
 }
 
-// returns a coordinate value (shipExist, shipSunk etc) 
-MapCoord Player::coordValue(Coord guess) {
-    return shipMap[guess.y][guess.x];
-}
-
 
 // check if input coordinates of ship lie within the map
 bool Player::inMap(Ship testShip) {

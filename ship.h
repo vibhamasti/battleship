@@ -10,7 +10,6 @@
 #include "coord.h"
 
 
-#define SHIP_MAX 6
 
 class Ship {
     int len;                    // length of a Ship

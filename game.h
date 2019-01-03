@@ -11,7 +11,6 @@
 #include <iostream>
 
 
-// TODO: map for scores
 
 class Game {
     Player p1, p2;
@@ -31,7 +30,7 @@ public:
     void play();                                    // play the game by playing multiple rounds
     void playRound(Player&, Player&);               // play one round of hitting/scoring/printing
     bool inPlay();
-    void saveBestTurns(char *, int);                    // save high score onto file      
+    void saveBestTurns(char *, int);                // save high score onto file      
 };
 
 

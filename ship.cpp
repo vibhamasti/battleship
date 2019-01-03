@@ -11,7 +11,7 @@
 using namespace std;
 
 Ship::Ship() {
-    len = SHIP_MAX;
+    len = 0;
 }
 
 int Ship::getLen() {
