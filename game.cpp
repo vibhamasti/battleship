@@ -30,7 +30,7 @@ void Game::printRules() {
 
     cout << "The objective of the game is to try and guess the\n";
     cout << "location of your opponent's ships by entering coordinates.\n";
-    cout << "If a guess is at the loaction of a ship, it is called a\n";
+    cout << "If a guess is at the location of a ship, it is called a\n";
     cout << "hit. If the guess is a water tile, it is called a miss.\n";
     cout << "If all of the coordinates of one ship have been hit,\n";
     cout << "the ship is said to have been sunk\n";
@@ -64,10 +64,10 @@ void Game::printRules() {
 // to check data file for pname
 void Game::checkFile(Player &currentPlayer) {
     
-    bool isFound = false;                   // variable to state if player name exists
-    fstream playerFile;                     // file that stores all player names	
+    bool isFound = false;       // variable to state if player name exists
+    fstream playerFile;         // file that stores all player names	
 	
-	PlayerData tempData;                    // variable that reads player info from file
+	PlayerData tempData;        // variable that reads player info from file
 	
 	// open file
 	playerFile.open("playerNames.dat", ios::binary | ios::in);
@@ -77,7 +77,7 @@ void Game::checkFile(Player &currentPlayer) {
         
         // if currentPlayer's name exists on file
         if (strcmp(tempData.name, currentPlayer.getName()) == 0) {
-            // copy saved high score onto currentPlayer
+            // copy saved minimum turns onto currentPlayer
             currentPlayer.setMinTurns(tempData.turns);
             isFound = true;
             break;
@@ -93,14 +93,16 @@ void Game::checkFile(Player &currentPlayer) {
 	if (isFound) {	
 		// display old high score
 		cout << "\nWelcome back, " << currentPlayer.getName() << "!\n";
-        cout << "Your best number of turns is: " << currentPlayer.getMinTurns() << "\n";
+        cout << "Your best number of turns is: ";
+        cout << currentPlayer.getMinTurns() << "\n";
 	}	
 	
 	// if name does not exist 
 	else {
-        cout << "\nHello, " << currentPlayer.getName() << "! First time playing?\n";
+        cout << "\nHello, " << currentPlayer.getName();
+        cout << "! First time playing?\n";
 
-		// set player's high score to infinity 
+		// set player's minimum turns to infinity 
 	    currentPlayer.setMinTurns(INF);
 
         // store currentPlayer's data onto temp variable
@@ -114,7 +116,7 @@ void Game::checkFile(Player &currentPlayer) {
 	}
 }
 
-// save new best attempt
+// save new best attempt (minimum turns)
 void Game::saveBestTurns(char *pname, int pturns) {
     fstream playerFile;                 // file with all the player names
     PlayerData tempPlayer;
@@ -130,8 +132,11 @@ void Game::saveBestTurns(char *pname, int pturns) {
 
         // if player name found
         if (strcmp(tempPlayer.name, pname) == 0) {
+            // update best number of turns on tempPlayer
             tempPlayer.turns = pturns;
+            // go back to beginning of current record
             playerFile.seekg(pos - sizeof(tempPlayer), ios::beg);
+            // overwrite old player data with updated best attempt
             playerFile.write((char* ) &tempPlayer, sizeof(tempPlayer));
             break;
         }
@@ -144,7 +149,7 @@ void Game::saveBestTurns(char *pname, int pturns) {
 }
 
 
-// input's single player's data
+// inputs single player's data
 void Game::inputPlayerData(Player &currentPlayer, Player &other) {
 
     // print currentPlayer's empty map
@@ -153,7 +158,7 @@ void Game::inputPlayerData(Player &currentPlayer, Player &other) {
     // input currentPlayer's name (ensure it is unique) 
     currentPlayer.inputName();
     
-    // unique name
+    // check to ensure that each player has a unique name
     while (!strcmp(currentPlayer.getName(), other.getName())) {
         cout << currentPlayer.getName() << " is already playing.\n";
         currentPlayer.inputName();
@@ -202,7 +207,7 @@ void Game::inputPlayers() {
 void Game::playRound(Player &madeHit, Player &gotHit) {
     Coord guessPos;
 
-    // update number of turns by 1
+    // increment number of turns
     madeHit.increaseTurns();
 
     cout << endl << endl;
@@ -223,7 +228,8 @@ void Game::playRound(Player &madeHit, Player &gotHit) {
     
 
     // displays partial map of gotHit so madeHit can see it
-    cout << endl << gotHit.getName() << "'s map for " << madeHit.getName() << " to view:\n";
+    cout << endl << gotHit.getName() << "'s map for ";
+    cout << madeHit.getName() << " to view:\n";
     gotHit.printGuessMap();
     
     

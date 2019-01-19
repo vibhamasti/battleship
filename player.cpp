@@ -8,7 +8,6 @@
 
 using namespace std;
 
-
 // constructor
 Player::Player() {
     pData.turns = 0;
@@ -19,7 +18,7 @@ Player::Player() {
         ships[i].setLen(i + 2);
     }
     
-    // inintialise map's coordinates to empty
+    // initialise map's coordinates to MapCoord::empty
     for (int i = 0; i < MAP_SIZE; ++i) {
         for (int j = 0; j < MAP_SIZE; ++j) {
             shipMap[i][j] = MapCoord::empty;
@@ -28,13 +27,12 @@ Player::Player() {
     
 }
 
-// sets high score
+// sets best attempt (minimum number of turns)
 void Player::setMinTurns(int mt) {
     minTurns = mt;
 }
 
-
-// increase score
+// increase number of turns
 void Player::increaseTurns() {
     pData.turns++;
 }
@@ -44,33 +42,35 @@ char* Player::getName() {
     return pData.name;
 }
 
+// returns number of turns played thus far
 int Player::getTurns() {
     return pData.turns;
 }
 
-// returns player high score
+// returns best attempt of player (minimum number of turns)
 int Player::getMinTurns() {
     return minTurns;
 }
 
-// if ship lies within map and in empty coordinates
+
+// returns if entered ship coordinates are valid
 ShipCoord Player::getStatus(Ship testShip) {
-    // if the ship will exit the map
+    // if the ship will lie outside the map
     if (!inMap(testShip)) {
         return ShipCoord::outOfBounds;
     }
     
-    // if another ship already exists
+    // if another ship already exists in entered coordinates
     if (!mapFree(testShip)) {
         return ShipCoord::occu;
     }
     
-    // if coordinates entered are valid
+    // otherwise, coordinates entered are valid
     return ShipCoord::valid;
 }
 
 
-// check if input coordinates of ship lie within the map
+// check if entered ship coordinates lie within the map
 bool Player::inMap(Ship testShip) {
     if (testShip.getOri() == 'h' && testShip.getPos().x + testShip.getLen() > MAP_SIZE) {
         return false;
@@ -81,13 +81,11 @@ bool Player::inMap(Ship testShip) {
     return true;
 }
 
-// checks if the coordinates for testShip
-// to occupy are free to be used
+// checks if the ship coordinates are free to be occupied
 bool Player::mapFree(Ship testShip) {
     // if the testShip is horizontally oriented
     if (testShip.getOri() == 'h') {
-        // loops through all the coordinates
-        // and checks if all are empty
+        // loops through all the coordinates and checks if all are empty
         for (int i = testShip.getPos().x; i < (testShip.getPos().x + testShip.getLen()); ++i) {
             if (shipMap[testShip.getPos().y][i] != MapCoord::empty) {
                 return false;
@@ -96,8 +94,7 @@ bool Player::mapFree(Ship testShip) {
     }
     // if the testShip is vertically oriented
     else {
-        // loops through all the coordinates
-        // and checks if all are empty
+        // loops through all the coordinates and checks if all are empty
         for (int i = testShip.getPos().y; i < (testShip.getPos().y + testShip.getLen()); ++i) {
             if (shipMap[i][testShip.getPos().x] != MapCoord::empty) {
                 return false;
@@ -106,22 +103,25 @@ bool Player::mapFree(Ship testShip) {
     }
     return true;
 }
-
-// checks if the guessed coordinates lie within the map
-// or have been guessed already (uses Coord)
+// checks if guessed coordinates are valid (within the map, not yet guessed)
 GuessCoord Player::guessValidity(Coord guess) {
+
+    // if coordinates lie outside map
     if (guess.x >= MAP_SIZE || guess.y >= MAP_SIZE) {
         return GuessCoord::outOfBounds;
     }
-    // if coordinate not empty and not shipExist
+
+    // if coordinates not empty and not shipExist (therefore has been guessed)
     if (shipMap[guess.y][guess.x] != MapCoord::empty && shipMap[guess.y][guess.x] != MapCoord::shipExist) {
         return GuessCoord::guessed;
     }
+
+    // otherwise, not yet guessed
     return GuessCoord::notYetGuessed;
 }
 
 
-// draws testShip onto the shipMap
+// 'draws' testShip onto the shipMap
 void Player::drawShip(Ship testShip) {
     // if testShip is horizonally oriented
     if (testShip.getOri() == 'h') {
@@ -158,7 +158,7 @@ void Player::inputShips() {
         // input the details of the i'th ship
         ships[i].input();
         
-        
+        // loop to check for validity of entered coordinates of i’th ship
         while (getStatus(ships[i]) != ShipCoord::valid) {
             switch (getStatus(ships[i])) {
                     // if ship out of bounds
@@ -176,6 +176,7 @@ void Player::inputShips() {
                     break;
                 }
             }
+            // ‘draws’ the new ship (updates shipMap)
             cout << "Re-enter coordinates:\n";
             ships[i].input();
             
@@ -185,13 +186,15 @@ void Player::inputShips() {
         // updates the ship map
         drawShip(ships[i]);
         
-        cout << "\n\nUpdated map:\n\n";
         // prints map
+        cout << "\n\nUpdated map:\n\n";
         printFullMap();
-        
+
     }
 }
 
+// returns a symbol (to be drawn on shipMap) 
+// that corresponds to each MapCoord value
 char Player::symbol(MapCoord val) {
     switch (val) {
         case MapCoord::empty: {
@@ -236,7 +239,7 @@ void Player::printFullMap() {
 // prints only the tiles that have been guessed
 void Player::printGuessMap() {
 
-    // prints x coordinates in a horizontal line
+    // prints x coordinates in a horizontal line (led by 3 spaces)
     cout << "\n   ";
     for (int j = 0; j < MAP_SIZE; ++j) {
         cout << j << " ";
@@ -244,7 +247,7 @@ void Player::printGuessMap() {
     }
     cout << endl << endl;
     
-    // prints y coordinates in a vertical line
+    // prints y coordinates in a vertical line (followed by 2 spaces)
     for (int i = 0; i < MAP_SIZE; i++) {
         cout << i << "  ";
         for (int j = 0; j < MAP_SIZE; j++) {
@@ -264,7 +267,7 @@ void Player::printGuessMap() {
 
 // check if a ship has been sunk
 bool Player::isSunk(Ship testShip) {
-    
+    // for a horizontally oriented ship
     if (testShip.getOri() == 'h') {
         for (int i = testShip.getPos().x; i < testShip.getPos().x + testShip.getLen(); i++) {
             if (shipMap[testShip.getPos().y][i] != MapCoord::shipHit && shipMap[testShip.getPos().y][i] != MapCoord::shipSunk)
@@ -272,7 +275,8 @@ bool Player::isSunk(Ship testShip) {
         }
         return true;
     }
-    
+
+    // for a vertically oriented ship
     else {
         for(int i = testShip.getPos().y; i < testShip.getPos().y + testShip.getLen(); i++){
             if (shipMap[i][testShip.getPos().x] != MapCoord::shipHit && shipMap[i][testShip.getPos().x] != MapCoord::shipSunk)
@@ -283,7 +287,7 @@ bool Player::isSunk(Ship testShip) {
     
 }
 
-// sink a ship (updates all MapCoord values to shipSunk)
+// 'sink' a ship (updates all MapCoord values to shipSunk)
 void Player::sink(Ship testShip) {
     if (testShip.getOri() == 'h') {
         for (int i = testShip.getPos().x; i < testShip.getPos().x + testShip.getLen(); i++) {

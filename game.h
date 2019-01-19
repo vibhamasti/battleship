@@ -23,13 +23,13 @@ public:
     void inputPlayers();
     void printRules();
     void inputPlayerData(Player&, Player&);         // input player name and ships
-    void checkFile(Player&);                        // checks file for name and high score
+    void checkFile(Player&);                        // checks file for name and minimum turns
 
     // game play functions
     void play();                                    // play the game by playing multiple rounds
     void playRound(Player&, Player&);               // play one round of hitting/scoring/printing
     bool inPlay();
-    void saveBestTurns(char *, int);                // save high score onto file      
+    void saveBestTurns(char *, int);                // save best number of turns onto file      
 };
 
 
